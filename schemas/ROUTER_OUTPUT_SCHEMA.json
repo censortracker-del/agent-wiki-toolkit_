@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Wiki Router Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "router_version",
+    "protocol_version",
+    "entry_mode",
+    "bootstrap_mode",
+    "bootstrap_tier",
+    "daily_loop_file",
+    "role_mode",
+    "strictness_score",
+    "independence_score",
+    "corpus_size_hint",
+    "files_to_fetch",
+    "do_not_fetch",
+    "reason",
+    "token_policy",
+    "independence_gap",
+    "next_action"
+  ],
+  "properties": {
+    "router_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "protocol_version": {
+      "type": "integer",
+      "const": 3
+    },
+    "entry_mode": {
+      "type": "string",
+      "const": "questionnaire"
+    },
+    "bootstrap_mode": {
+      "type": "string",
+      "enum": [
+        "new_project",
+        "existing_agent_wiki",
+        "recovery_needed"
+      ]
+    },
+    "bootstrap_tier": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "LITE",
+        "MAX",
+        null
+      ]
+    },
+    "daily_loop_file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "core/PRINCIPLES_MINI.md",
+        null
+      ]
+    },
+    "role_mode": {
+      "type": "string",
+      "enum": [
+        "SOLO",
+        "DUAL",
+        "FULL"
+      ]
+    },
+    "strictness_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "independence_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "corpus_size_hint": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "small",
+        "medium",
+        "large",
+        "huge"
+      ]
+    },
+    "files_to_fetch": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fetchable_file"
+      }
+    },
+    "do_not_fetch": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fetchable_file"
+      }
+    },
+    "reason": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "token_policy": {
+      "type": "string"
+    },
+    "independence_gap": {
+      "type": "boolean"
+    },
+    "next_action": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "fetchable_file": {
+      "type": "string",
+      "enum": [
+        "core/LITE.md",
+        "core/PRINCIPLES_MAX.md",
+        "core/PRINCIPLES_MINI.md",
+        "project_notes/BOOK_PROJECT_NOTES.md",
+        "USER_PROFILE.md"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "bootstrap_mode": {
+            "const": "existing_agent_wiki"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "bootstrap_tier": {
+            "type": "null"
+          },
+          "daily_loop_file": {
+            "const": "core/PRINCIPLES_MINI.md"
+          },
+          "files_to_fetch": {
+            "contains": {
+              "const": "core/PRINCIPLES_MINI.md"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_mode": {
+            "enum": [
+              "new_project",
+              "recovery_needed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "daily_loop_file": {
+            "type": "null"
+          },
+          "files_to_fetch": {
+            "not": {
+              "contains": {
+                "const": "core/PRINCIPLES_MINI.md"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

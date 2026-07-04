@@ -1,0 +1,211 @@
+{
+  "toolkit_name": "agent-wiki-toolkit",
+  "distribution_version": "3.2-adaptive-production",
+  "protocol_version": 3,
+  "router_version": 2,
+  "recommended_entry": "MANIFEST.json",
+  "token_policy": "fetch MANIFEST.json first; choose ROUTER or ADAPTIVE_INTAKE; fetch only selected files; do not fetch core/PRINCIPLES_MAX.md unless selected",
+  "machine_logic": {
+    "entry_mode": [
+      "questionnaire",
+      "file_driven"
+    ],
+    "bootstrap_mode": [
+      "new_project",
+      "existing_agent_wiki",
+      "recovery_needed"
+    ],
+    "bootstrap_tier": [
+      "LITE",
+      "MAX"
+    ],
+    "daily_loop_file": "core/PRINCIPLES_MINI.md",
+    "role_mode": [
+      "SOLO",
+      "DUAL",
+      "FULL"
+    ]
+  },
+  "entry_rules": {
+    "description_only": {
+      "fetch": [
+        "USER_PROFILE.md",
+        "intake/ROUTER.md",
+        "schemas/ROUTER_OUTPUT_SCHEMA.json"
+      ]
+    },
+    "files_repo_archive_or_uploads": {
+      "fetch": [
+        "USER_PROFILE.md",
+        "intake/ADAPTIVE_INTAKE.md",
+        "schemas/SOURCE_INVENTORY_SCHEMA.json"
+      ]
+    },
+    "manual_chat_handoff": {
+      "fetch": [
+        "scenarios/MANUAL_CHAT_HANDOFF.md"
+      ]
+    },
+    "simple_api": {
+      "fetch": [
+        "scenarios/API_SIMPLE_FLOW.md"
+      ]
+    },
+    "orchestrated_api": {
+      "fetch": [
+        "scenarios/API_ORCHESTRATED_FLOW.md"
+      ]
+    }
+  },
+  "selection_rules": {
+    "new_low_risk_project": [
+      "core/LITE.md"
+    ],
+    "new_high_risk_or_heavy_project": [
+      "core/PRINCIPLES_MAX.md"
+    ],
+    "existing_agent_wiki_daily_loop": [
+      "core/PRINCIPLES_MINI.md"
+    ],
+    "recovery_needed": [
+      "core/PRINCIPLES_MAX.md"
+    ],
+    "book_legacy_project_only": [
+      "project_notes/BOOK_PROJECT_NOTES.md"
+    ]
+  },
+  "files": {
+    "README.md": {
+      "type": "human_entry",
+      "purpose": "human overview and entry flow",
+      "sha256": "2f4d50ce36392db734fd217f5535c798f64f62be3f2d072b541195d9acc693f0",
+      "bytes": 2542
+    },
+    "USER_PROFILE.md": {
+      "type": "profile",
+      "purpose": "durable intake defaults and lane-to-agent binding",
+      "standard_toolkit_file": true,
+      "fallback_if_unavailable": "ask all questions including independence Q4/Q6",
+      "sha256": "52d480a786d72644779390cb64efcc87a8218a16ff7ec1d19e257b5bfc455fa9",
+      "bytes": 2372
+    },
+    "core/LITE.md": {
+      "type": "core",
+      "purpose": "low-risk new project bootstrap",
+      "bootstrap_tier": "LITE",
+      "sha256": "bdee2128b307c4756a64fd59081db3be16f1c8f9fef3b4894b6b428b77f8ea5c",
+      "bytes": 5005
+    },
+    "core/PRINCIPLES_MAX.md": {
+      "type": "core",
+      "purpose": "bootstrap/recovery/high-risk protocol",
+      "bootstrap_tier": "MAX",
+      "sha256": "006175d45e27f53cd5e6bd76b41a259c723678cc853080e285529ed083bc78dc",
+      "bytes": 28462
+    },
+    "core/PRINCIPLES_MINI.md": {
+      "type": "core",
+      "purpose": "daily loop for already deployed Agent_Wiki only",
+      "daily_loop_file": true,
+      "sha256": "8b70e310300a4d32775a50aa4173da92262ac93200bc1abab2567eb555b3834d",
+      "bytes": 7086
+    },
+    "intake/ROUTER.md": {
+      "type": "intake",
+      "purpose": "questionnaire entry when no files are available",
+      "entry_mode": "questionnaire",
+      "sha256": "ae8fe4d08a23a9783260bf4d86fb6e25ff3735f76bee6539ae7d18e008af5259",
+      "bytes": 6567
+    },
+    "intake/ADAPTIVE_INTAKE.md": {
+      "type": "intake",
+      "purpose": "file-driven entry when project files are available",
+      "entry_mode": "file_driven",
+      "sha256": "6686012bbb0db38833519ac4cbcd4eed736360f7c3c031051c4451cb65a23979",
+      "bytes": 2690
+    },
+    "schemas/ROUTER_OUTPUT_SCHEMA.json": {
+      "type": "schema",
+      "purpose": "strict schema for questionnaire router output",
+      "sha256": "e6bfb63e0c7e3e8252083a93307b3017a4faa58bcee0a38185a74bdaf6641488",
+      "bytes": 3598
+    },
+    "schemas/SOURCE_INVENTORY_SCHEMA.json": {
+      "type": "schema",
+      "purpose": "strict schema for file-driven source inventory output",
+      "sha256": "da520ff2e93acd95d047dd9b08d70bd3cf47acfb08eea10d2ea80029983ecf52",
+      "bytes": 11404
+    },
+    "orchestration/AGENT_FETCH_PROMPT.md": {
+      "type": "orchestration",
+      "purpose": "minimal GitHub loader prompt",
+      "sha256": "be4bc4ec82a5391f1f319396bba39532cd28fd35c821a510dcf9b96fce8195a5",
+      "bytes": 1890
+    },
+    "orchestration/API_ORCHESTRATION_SPEC.md": {
+      "type": "orchestration",
+      "purpose": "minimal-token API orchestration spec",
+      "sha256": "d9b5afed9f4db6ea38d0dca8f23225c91014c2f397a84a753f7d46016a213bae",
+      "bytes": 2771
+    },
+    "orchestration/MCP_INTEGRATION.md": {
+      "type": "optional_orchestration",
+      "purpose": "optional MCP/tool access rules",
+      "do_not_load_by_default": true,
+      "load_when": [
+        "external_tools_needed",
+        "github_fetch_needed",
+        "filesystem_inventory_needed",
+        "database_or_browser_access_needed",
+        "api_orchestrated_flow"
+      ],
+      "sha256": "6b2b8d9f4e5790e4c6a9d262705823596e45d2ef0cd0759aba7d553f0b34cc8a",
+      "bytes": 1541
+    },
+    "orchestration/STORAGE_RETRIEVAL_STRATEGY.md": {
+      "type": "optional_orchestration",
+      "purpose": "optional RAG/indexed retrieval strategy",
+      "do_not_load_by_default": true,
+      "load_when": [
+        "project_files_provided",
+        "large_corpus_detected",
+        "rag_considered",
+        "retrieval_strategy_needed",
+        "corpus_size_uncertain"
+      ],
+      "sha256": "2a07f781fe136cd5f1d61444067156b0c91fb8c1c875275e9c87f6969a83c154",
+      "bytes": 1568
+    },
+    "scenarios/MANUAL_CHAT_HANDOFF.md": {
+      "type": "scenario",
+      "purpose": "manual cross-chat workflow through shared Agent_Wiki files",
+      "sha256": "bc960271c2047bd4d19fecfbd2c8d040d785c50dc359d5e4abee1d49ab688fc7",
+      "bytes": 1393
+    },
+    "scenarios/API_SIMPLE_FLOW.md": {
+      "type": "scenario",
+      "purpose": "single-agent API scenario",
+      "sha256": "45a9258da3775187525293c544dcf35be035e305b5ec4aa208180c77c1e074c3",
+      "bytes": 930
+    },
+    "scenarios/API_ORCHESTRATED_FLOW.md": {
+      "type": "scenario",
+      "purpose": "multi-agent API orchestration scenario",
+      "sha256": "8805e021909c4068163ef20f0dd2329c628bc982488bd307ce07266cbf2731d6",
+      "bytes": 1066
+    },
+    "context/GPT_CONTEXT.md": {
+      "type": "context",
+      "purpose": "compact context for GPT/Codex/Coworking agents",
+      "sha256": "8219921694ccfa151a0da962348eaaa02fc976b68c13bc861464373d51b48b9e",
+      "bytes": 1662
+    },
+    "project_notes/BOOK_PROJECT_NOTES.md": {
+      "type": "project_notes",
+      "purpose": "book project legacy notes only; not universal",
+      "universal": false,
+      "sha256": "456ffebf4bcc15cb30c57eaa23eab8926ee48b3f95c80df7039983446ec78f71",
+      "bytes": 2818
+    }
+  }
+}
